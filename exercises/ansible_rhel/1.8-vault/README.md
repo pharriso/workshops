@@ -59,15 +59,15 @@ Now let's use ansible-vault in a playbook. Create the following playbook. Create
 
 A couple of things to note here. First we are including a variables file using vars_file. This is another way we can manage variables with Ansible. The copy module is often used to copy files to servers. In the below example we are using it to populate a file with trivial content.
 
-```yml
-{% raw %}
+<!-- {% raw %} -->
+```yaml
 ---
 
 - name: Testing ansible-vault
   hosts: web
   become: yes
   vars_files:
-    - ~/vault/vault.yml
+    - ~/ansible-files/vault/vault.yml
   tasks:
     - name: Create a text file containing our secret password
       copy:
@@ -76,8 +76,9 @@ A couple of things to note here. First we are including a variables file using v
         mode: 0600
         owner: root
         group: root
-{% endraw %}
 ```
+<!-- {% endraw %} -->
+
 
 ## Step 3 - Run our playbook
 
