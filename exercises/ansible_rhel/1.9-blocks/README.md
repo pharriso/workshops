@@ -49,6 +49,9 @@ Using vi edit the `roles/apache_vhost/tasks/main.yml`. Delete the existing conte
     notify:
       - restart_httpd
 
+  - name: force handler to run
+    meta: flush_handlers
+
   - name: test our website for status code 200
     uri:
       url: http://{{ ansible_host }}:8080
@@ -84,15 +87,15 @@ We are now going to update the port that our webserver is listening on. This is 
 
 ```bash
 cd ~/ansible-files
-sed -i.bak 's/^<VirtualHost.*/<VirtualHost *:80>/' roles/apache_vhost/templates/vhost.conf.j2
+sed -i.bak 's/^<VirtualHost.*/<VirtualHost *:81>/' roles/apache_vhost/templates/vhost.conf.j2
 ```
 Now let's re-run our playbook.
 
 ```bash
-ansible-playbook site.yml
+ansible-playbook test_apache_role.yml
 ```
 
-Our playbook has failed now. We tried to smoke test our website on port 80 but our webserver is now mis-configured and is listening on port 81.
+Our playbook has failed now. We tried to smoke test our website on port 8080 but our webserver is now mis-configured and is listening on port 81.
 
 ## Step 3: rescue to the rescue
 
