@@ -52,10 +52,13 @@ Using vi edit the `roles/apache_vhost/tasks/main.yml`. Delete the existing conte
   - name: force handler to run
     meta: flush_handlers
 
-  - name: test our website for status code 200
+  - name: test our website 
     uri:
-      url: http://{{ ansible_host }}:8080
+      url: http://{{ ansible_host }}:80
       status_code: 200
+      return_content: yes
+    register: web_status
+    failed_when: "'simple vhost index' not in web_status.content"
 
 ```
 <!-- {% endraw %} -->
@@ -63,10 +66,10 @@ Using vi edit the `roles/apache_vhost/tasks/main.yml`. Delete the existing conte
 ---
 **NOTE**
 
-Firstly, note that we are forcing our handlers to run early. This is because we will want to restart httpd before we try to test our website. Also note the uri module we are using here. This can be used to interact with http & https services to perform operations such as GET, POST, PUT, HEAD, DELETE and more.
+* Firstly, note that we are forcing our handlers to run early. This is because we will want to restart httpd before we try to test our website. 
+* Note the uri module we are using here. This can be used to interact with http & https services to perform operations such as GET, POST, PUT, HEAD, DELETE and more.
+* Finally, see how we have used register to capture the results of our uri module. We are then failing the task if we don't see "simple vhost index" in our output.
 
-**NOTE**
-This assumes that you left your webserver configurations to listen on port 8080. If you changed the port then update the playbook to reflect the port you used.
 
 ---
 
@@ -87,7 +90,7 @@ We are now going to update the port that our webserver is listening on. This is 
 
 ```bash
 cd ~/ansible-files
-sed -i.bak 's/^<VirtualHost.*/<VirtualHost *:81>/' roles/apache_vhost/templates/vhost.conf.j2
+sed -i.bak 's/^<VirtualHost.*/<VirtualHost *:8081>/' roles/apache_vhost/templates/vhost.conf.j2
 ```
 Now let's re-run our playbook.
 
@@ -95,7 +98,7 @@ Now let's re-run our playbook.
 ansible-playbook test_apache_role.yml
 ```
 
-Our playbook has failed now. We tried to smoke test our website on port 8080 but our webserver is now mis-configured and is listening on port 81.
+Our playbook has failed now. We tried to smoke test our website on port 8080 but our webserver is now mis-configured and is listening on port 8081.
 
 ## Step 3: rescue to the rescue
 
