@@ -104,104 +104,105 @@ Our playbook has failed now. We tried to smoke test our website on port 8080 but
 
 Let's update our `roles/apache-simple/tasks/main.yml` file and add a rescue section at the end. The rescue section of the block will run if any errors are encountered. Here we are going to copy our original httpd.conf file back in place if we encounter any errors, force any handlers to run and then smoke test our website again.
 
-```yml
-{% raw %}
+<!-- {% raw %} -->
+```yaml
   rescue:
-  - name: Copy our original httpd.conf back in place
+  - name: Copy our original vhost config back in place
     template:
-      src: templates/httpd.conf.j2.bak
-      dest: /etc/httpd/conf/httpd.conf
-    notify: restart apache service
+      src: vhost.conf.j2.bak
+      dest: /etc/httpd/conf.d/vhost.conf
+    notify: restart_httpd
 
   - name: force handler to run
     meta: flush_handlers
 
-  - name: test our website for status code 200
+  - name: test our website
     uri:
-      url: http://{{ ansible_host }}
+      url: http://{{ ansible_host }}:8080
       status_code: 200
-{% endraw %}
+      return_content: yes
+    register: web_status
+    failed_when: "'simple vhost index' not in web_status.content"
 ```
+<!-- {% endraw %} -->
 
 ## Step 4: The Finished role
 
 Your finished role should now look like this.
 
-```yml
-{% raw %}
+<!-- {% raw %} -->
+```yaml
 ---
-# tasks file for apache-simple
 - block:
-  - name: install httpd packages
+  - name: install httpd
     yum:
-      name: "{{ item }}"
-      state: present
-    with_items: "{{ httpd_packages }}"
-    notify: restart apache service
+      name: httpd
+      state: latest
 
-  - name: create site-enabled directory
-    file:
-      name: /etc/httpd/conf/sites-enabled
-      state: directory
-
-  - name: copy httpd.conf
-    template:
-      src: templates/httpd.conf.j2
-      dest: /etc/httpd/conf/httpd.conf
-    notify: restart apache service
-
-  - name: copy index.html
-    template:
-      src: templates/index.html.j2
-      dest: /var/www/html/index.html
-
-  - name: start httpd
+  - name: start and enable httpd service
     service:
       name: httpd
       state: started
-      enabled: yes
+      enabled: true
+
+  - name: ensure vhost directory is present
+    file:
+      path: "/var/www/vhosts/{{ ansible_hostname }}"
+      state: directory
+
+  - name: deliver html content
+    copy:
+      src: index.html
+      dest: "/var/www/vhosts/{{ ansible_hostname }}"
+
+  - name: template vhost file
+    template:
+      src: vhost.conf.j2
+      dest: /etc/httpd/conf.d/vhost.conf
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - restart_httpd
 
   - name: force handler to run
     meta: flush_handlers
 
-  - name: test our website for status code 200
+  - name: test our website 
     uri:
-      url: http://{{ ansible_host }}
+      url: http://{{ ansible_host }}:8080
       status_code: 200
+      return_content: yes
+    register: web_status
+    failed_when: "'simple vhost index' not in web_status.content"
 
   rescue:
-  - name: Copy our original httpd.conf back in place
+  - name: Copy our original vhost config back in place
     template:
-      src: templates/httpd.conf.j2.bak
-      dest: /etc/httpd/conf/httpd.conf
-    notify: restart apache service
+      src: vhost.conf.j2.bak
+      dest: /etc/httpd/conf.d/vhost.conf
+    notify: restart_httpd
 
   - name: force handler to run
     meta: flush_handlers
 
-  - name: test our website for status code 200
+  - name: test our website
     uri:
-      url: http://{{ ansible_host }}
+      url: http://{{ ansible_host }}:8080
       status_code: 200
-{% endraw %}
+      return_content: yes
+    register: web_status
+    failed_when: "'simple vhost index' not in web_status.content"
 ```
+<!-- {% endraw %} -->
 
 Now let's run our playbook one more time. 
 
 ```bash
-ansible-playbook site.yml
+ansible-playbook test_apache_role.yml
 ```
 
 Once a failure is detected with our website, we now run our rescue block which re-instates our known working apache configuration and our webservers are left in a working state.
-
-
-## Mark Exercise As Completed
-
-Please now run this command:
-
-```bash
-cd ~/linklight/exercises/ansible_engine/9-blocks-extra-vars/ && ./completed.sh
-```
 
 
 ---
