@@ -54,7 +54,7 @@ Using vi edit the `roles/apache_vhost/tasks/main.yml`. Delete the existing conte
 
   - name: test our website 
     uri:
-      url: http://{{ ansible_host }}:80
+      url: http://{{ ansible_host }}:8080
       status_code: 200
       return_content: yes
     register: web_status
