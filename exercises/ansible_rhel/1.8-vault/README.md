@@ -12,8 +12,8 @@ Let's create a vault file. Let's go back to our playbook directory.
 Let's create a directory for our vault exercise.
 
 ```bash
-mkdir ~/vault
-cd ~/vault
+mkdir ~/ansible-files/vault
+cd ~/ansible-files/vault
 ```
 
 Now we can create our vault file.
