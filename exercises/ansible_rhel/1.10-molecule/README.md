@@ -23,8 +23,7 @@ To run docker commands as a non-priviledged user we need to create a docker grou
 ```bash
 sudo groupadd docker
 sudo usermod -a -G docker studentx
-logout
-ssh studentx@X.X.X.X
+newgrp docker
 ```
 Now we can install docker and other dependencies for molecule.
 
@@ -97,21 +96,15 @@ molecule, version 2.22
 
 ## Section 2: Creating a New Role Framework
 
-Let's use the simple apache install playbook from earlier as a basis, and extend it into a molecule based role.
+We'll use a simple apache role to test molecule.
 
-### Step 1 - Prep
-
-```bash
-mkdir -p ~/apache_basic2/roles
-cd ~/apache_basic2/roles
-```
-
-### Step 2 - Initalise New Role
+### Step 1 - Initalise New Role
 
 ```bash
+cd ~/ansible-files/roles
 molecule init role --role-name apache_install --driver-name docker
 --> Initializing new role apache_install...
-Initialized role in /home/student1/apache_basic/roles/apache_install successfully.
+Initialized role in /home/student1/ansible-files/roles/apache_install successfully.
 ```
 
 Let's have a look at what was created:
@@ -182,7 +175,7 @@ Once you're happy you can commit your code to SCM.
 
 ```bash
 molecule converge
---> Validating schema /home/student1/apache_basic/roles/apache_install/molecule/default/molecule.yml.
+--> Validating schema /home/student1/ansible-files/roles/apache_install/molecule/default/molecule.yml.
 Validation completed successfully.
 --> Test matrix
 
@@ -288,7 +281,7 @@ Now do a test run. You should see some lint errors, something like this:
 
 ```bash
 molecule test
---> Validating schema /home/student1/apache_basic2/roles/apache_install/molecule/default/molecule.yml.
+--> Validating schema /home/student1/ansible-files/roles/apache_install/molecule/default/molecule.yml.
 Validation completed successfully.
 --> Test matrix
 
@@ -303,30 +296,30 @@ Validation completed successfully.
 
 --> Scenario: 'default'
 --> Action: 'lint'
---> Executing Yamllint on files found in /home/student1/apache_basic2/roles/apache_install/...
+--> Executing Yamllint on files found in /home/student1/ansible-files/roles/apache_install/...
 Lint completed successfully.
---> Executing Flake8 on files found in /home/student1/apache_basic2/roles/apache_install/molecule/default/tests/...
+--> Executing Flake8 on files found in /home/student1/ansible-files/roles/apache_install/molecule/default/tests/...
 Lint completed successfully.
---> Executing Ansible Lint on /home/student1/apache_basic2/roles/apache_install/molecule/default/playbook.yml...
+--> Executing Ansible Lint on /home/student1/ansible-files/roles/apache_install/molecule/default/playbook.yml...
     [701] Role info should contain platforms
-    /home/student1/apache_basic2/roles/apache_install/meta/main.yml:2
-    {'meta/main.yml': {'__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
+    /home/student1/ansible-files/roles/apache_install/meta/main.yml:2
+    {'meta/main.yml': {'__file__': u'/home/student1/ansible-files/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/ansible-files/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
 
     [703] Should change default metadata: author
-    /home/student1/apache_basic2/roles/apache_install/meta/main.yml:2
-    {'meta/main.yml': {'__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
+    /home/student1/ansible-files/roles/apache_install/meta/main.yml:2
+    {'meta/main.yml': {'__file__': u'/home/student1/ansible-files/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
 
     [703] Should change default metadata: description
-    /home/student1/apache_basic2/roles/apache_install/meta/main.yml:2
-    {'meta/main.yml': {'__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
+    /home/student1/ansible-files/roles/apache_install/meta/main.yml:2
+    {'meta/main.yml': {'__file__': u'/home/student1/ansible-files/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
 
     [703] Should change default metadata: company
-    /home/student1/apache_basic2/roles/apache_install/meta/main.yml:2
-    {'meta/main.yml': {'__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
+    /home/student1/ansible-files/roles/apache_install/meta/main.yml:2
+    {'meta/main.yml': {'__file__': u'/home/student1/ansible-files/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
 
     [703] Should change default metadata: license
-    /home/student1/apache_basic2/roles/apache_install/meta/main.yml:2
-    {'meta/main.yml': {'__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
+    /home/student1/ansible-files/roles/apache_install/meta/main.yml:2
+    {'meta/main.yml': {'__file__': u'/home/student1/ansible-files/roles/apache_install/meta/main.yml', u'dependencies': [], u'galaxy_info': {u'description': u'your description', u'license': u'license (GPLv2, CC-BY, etc)', u'author': u'your name', u'company': u'your company (optional)', u'galaxy_tags': [], '__line__': 3, '__file__': u'/home/student1/apache_basic2/roles/apache_install/meta/main.yml', u'min_ansible_version': 1.2}, '__line__': 2}}
 
 An error occurred during the test sequence action: 'lint'. Cleaning up.
 --> Scenario: 'default'
@@ -393,7 +386,7 @@ Let's run molecule test to see the full cycle in action:
 
 ```bash
 molecule test
---> Validating schema /home/student1/apache_basic/roles/apache_install/molecule/default/molecule.yml.
+--> Validating schema /home/student1/ansible-files/roles/apache_install/molecule/default/molecule.yml.
 Validation completed successfully.
 --> Test matrix
 
@@ -416,10 +409,10 @@ You should see something like:
 ```
 --> Scenario: 'default'
 --> Action: 'verify'
---> Executing Testinfra tests found in /home/student1/apache_basic2/roles/apache_install/molecule/default/tests/...
+--> Executing Testinfra tests found in /home/student1/ansible-files/roles/apache_install/molecule/default/tests/...
     ============================= test session starts ==============================
     platform linux2 -- Python 2.7.5, pytest-4.4.0, py-1.8.0, pluggy-0.9.0
-    rootdir: /home/student1/apache_basic2/roles/apache_install/molecule/default
+    rootdir: /home/student1/ansible-files/roles/apache_install/molecule/default
     plugins: testinfra-1.19.0
 collected 1 item
 
@@ -448,10 +441,10 @@ This is fine as just proves that your testinfra code is working as expected.
 So your testinfra will work, let's write the role contents!
 
 ```bash
-vi ~/apache_basic2/site.yml
+vi ~/ansible-files/molecule_play.yml
 
 ---
-- name: Main Playbook (site.yml)
+- name: Main Playbook
   hosts: web
   become: "yes"
 
@@ -462,7 +455,7 @@ vi ~/apache_basic2/site.yml
 Not strictly necessary here, but I'm using the include_tasks directive to show that as well.
 
 ```bash
-vi ~/apache_basic2/roles/apache_install/tasks/main.yml
+vi ~/ansible-files/roles/apache_install/tasks/main.yml
 
 ---
 # tasks file for apache_install
@@ -471,7 +464,7 @@ vi ~/apache_basic2/roles/apache_install/tasks/main.yml
 ```
 
 ```bash
-vi ~/apache_basic2/roles/apache_install/tasks/install_apache.yml
+vi ~/ansible-files/roles/apache_install/tasks/install_apache.yml
 
 ---
 # tasks file for install_apache
@@ -489,9 +482,9 @@ vi ~/apache_basic2/roles/apache_install/tasks/install_apache.yml
 Let's first test the playbook to prove we've written something useful and workable:
 
 ```bash
-ansible-playbook ~/apache_basic2/site.yml
+ansible-playbook ~/ansible-files/molecule_play.yml
 
-PLAY [Main Playbook (site.yml)] ***********************************************************************************************************************
+PLAY [Main Playbook (molecule_play.yml)] ***********************************************************************************************************************
 
 TASK [Gathering Facts] ********************************************************************************************************************************
 ok: [node1]
@@ -499,7 +492,7 @@ ok: [node2]
 ok: [node3]
 
 TASK [apache_install : Include other playbooks] *******************************************************************************************************
-included: /home/student1/apache_basic2/roles/apache_install/tasks/install_apache.yml for node1, node2, node3
+included: /home/student1/ansible-files/roles/apache_install/tasks/install_apache.yml for node1, node2, node3
 
 TASK [apache_install : Install Apache] ****************************************************************************************************************
 ok: [node3]
@@ -519,9 +512,9 @@ Now let's do a full on test using molecule:
 
 ```bash
 
-cd ~/apache_basic2/roles/apache_install
+cd ~/ansible-files/roles/apache_install
 molecule test
---> Validating schema /home/student1/apache_basic2/roles/apache_install/molecule/default/molecule.yml.
+--> Validating schema /home/student1/ansible_files/roles/apache_install/molecule/default/molecule.yml.
 Validation completed successfully.
 --> Test matrix
 
@@ -536,11 +529,11 @@ Validation completed successfully.
 
 --> Scenario: 'default'
 --> Action: 'lint'
---> Executing Yamllint on files found in /home/student1/apache_basic2/roles/apache_install/...
+--> Executing Yamllint on files found in /home/student1/ansible-files/roles/apache_install/...
 Lint completed successfully.
---> Executing Flake8 on files found in /home/student1/apache_basic2/roles/apache_install/molecule/default/tests/...
+--> Executing Flake8 on files found in /home/student1/ansible-files/roles/apache_install/molecule/default/tests/...
 Lint completed successfully.
---> Executing Ansible Lint on /home/student1/apache_basic2/roles/apache_install/molecule/default/playbook.yml...
+--> Executing Ansible Lint on /home/student1/ansible-files/roles/apache_install/molecule/default/playbook.yml...
 Lint completed successfully.
 --> Scenario: 'default'
 --> Action: 'destroy'
@@ -564,7 +557,7 @@ Lint completed successfully.
 --> Scenario: 'default'
 --> Action: 'syntax'
 
-    playbook: /home/student1/apache_basic2/roles/apache_install/molecule/default/playbook.yml
+    playbook: /home/student1/ansible-files/roles/apache_install/molecule/default/playbook.yml
 
 --> Scenario: 'default'
 --> Action: 'create'
@@ -609,7 +602,7 @@ Lint completed successfully.
     ok: [instance]
 
     TASK [apache_install : Include other playbooks] ********************************
-    included: /home/student1/apache_basic2/roles/apache_install/tasks/install_apache.yml for instance
+    included: /home/student1/ansible-files/roles/apache_install/tasks/install_apache.yml for instance
 
     TASK [apache_install : Install Apache] *****************************************
     changed: [instance]
@@ -620,10 +613,10 @@ Lint completed successfully.
 
 --> Scenario: 'default'
 --> Action: 'verify'
---> Executing Testinfra tests found in /home/student1/apache_basic2/roles/apache_install/molecule/default/tests/...
+--> Executing Testinfra tests found in /home/student1/ansible-files/roles/apache_install/molecule/default/tests/...
     ============================= test session starts ==============================
     platform linux2 -- Python 2.7.5, pytest-4.3.0, py-1.8.0, pluggy-0.9.0
-    rootdir: /home/student1/apache_basic2/roles/apache_install/molecule/default, inifile:
+    rootdir: /home/student1/ansible-files/roles/apache_install/molecule/default, inifile:
     plugins: testinfra-1.16.0
 collected 1 item
 
@@ -657,17 +650,6 @@ You've explored the basics around using molecule for tesing Ansible.
 
 Much of this content was based around Jeff Geerling's most excellent blog:
 https://www.jeffgeerling.com/blog/2018/testing-your-ansible-roles-molecule
-
-
-## Mark Exercise As Completed
-
-Please now run this command:
-
-```bash
-cd ~/linklight/exercises/ansible_engine/10-molecule/ && ./completed.sh
-```
-
-
 
 ---
 
