@@ -37,7 +37,10 @@ If your experience is different in schedulung those workshops, please let us kno
  - [Exercise 1.5 - Conditionals, Handlers and Loops](1.5-handlers)
  - [Exercise 1.6 - Templates](1.6-templates)
  - [Exercise 1.7 - Roles](1.7-role)
- - [Exercise 1.8 - Bonus Labs](1.8-bonus)
+ - [Exercise 1.8 - Ansible Vault](1.8-vault)
+ - [Exercise 1.9 - Blocks and Rescue](1.9-blocks)
+ - [Exercise 1.10 - Molecule - Testing roles](1.10-molecule)
+ - [Exercise 1.11 - Bonus Labs](1.11-bonus)
 
 ## Section 2 - Ansible Tower Exercises
 

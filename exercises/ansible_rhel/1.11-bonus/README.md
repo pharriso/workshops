@@ -1,10 +1,10 @@
-# Exercise 1.8 - Bonus Labs
+# Exercise 1.11 - Bonus Labs
 
 **Read this in other languages**: ![uk](../../../images/uk.png) [English](README.md),  ![japan](../../../images/japan.png) [日本語](README.ja.md).
 
 You have finished the lab already. But it doesn’t have to end here. We prepared some slightly more advanced bonus labs for you to follow through if you like. So if you are done with the labs and still have some time, here are some more labs for you:
 
-## Step 8.1 - Bonus Lab: Ad Hoc Commands
+## Step 11.1 - Bonus Lab: Ad Hoc Commands
 
 Create a new user "testuser" on `node1` and `node3` with a comment using an ad hoc command, make sure that it is not created on `node2`!
 
@@ -36,7 +36,7 @@ Your commands could look like these:
 [student<X>@ansible ansible-files]$ ansible web -m command -a " id testuser" -b
 ```
 
-## Step 8.2 - Bonus Lab: Templates and Variables
+## Step 11.2 - Bonus Lab: Templates and Variables
 
 You have learned the basics about Ansible templates, variables and handlers. Let’s combine all of these.
 
