@@ -84,7 +84,7 @@ We are now going to update the port that our webserver is listening on. This is 
 
 ```bash
 cd ~/ansible-files
-sed -i.bak 's/^i<VirtualHost.*/<VirtualHost *:80>/' roles/apache_vhost/templates/vhost.conf.j2
+sed -i.bak 's/^<VirtualHost.*/<VirtualHost *:80>/' roles/apache_vhost/templates/vhost.conf.j2
 ```
 Now let's re-run our playbook.
 
