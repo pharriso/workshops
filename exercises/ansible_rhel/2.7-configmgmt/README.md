@@ -53,6 +53,7 @@ Now you have to create Job Templates like you would for "normal" Jobs.
       - **OPTIONS:** Enable privilege escalation
 
       - **EXTRA VARIABLES**
+
          snow_user: <instructor to provide>
          snow_password: <instructor to provide> 
          snow_instance: <instructor to provide>
@@ -79,7 +80,7 @@ $ getenforce
 Permissive
 ```
 
-Now let's re-launch or config mgmt job template. Observe this time that we had set SELinux back to enforcing mode and we have also raised a ticket in ServiceNow to report this drift so that we can investigate why this changed. The job output should print a ServiceNow ticket number.
+Now let's re-launch or config mgmt job template. Observe this time that we have set SELinux back to enforcing mode and we have also raised a ticket in ServiceNow to report this drift so that we can investigate why this changed. The job output should print a ServiceNow ticket number.
 
 Log into ServiceNow - https://<< instance name >>.service-now.com. Use the same credentials you passed into your job template as variables.
 
