@@ -50,7 +50,8 @@ If your experience is different in schedulung those workshops, please let us kno
  - [Exercise 2.4 - Surveys](2.4-surveys)
  - [Exercise 2.5 - Role based access control](2.5-rbac)
  - [Exercise 2.6 - Workflows](2.6-workflows)
- - [Exercise 2.7 - Wrap up](2.7-wrap)
+ - [Exercise 2.7 - Configuration Management](2.7-configmgmt)
+ - [Exercise 2.8 - Wrap up](2.8-wrap)
 
 ## Additional information
 
