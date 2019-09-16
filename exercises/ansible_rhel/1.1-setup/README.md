@@ -74,7 +74,8 @@ You might have guessed by now this lab is pretty commandline-centric…​ :-)
 
 You will soon discover that many chapters in this lab guide come with a "Challenge Lab" section. These labs are meant to give you a small task to solve using what you have learned so far. The solution of the task is shown underneath a warning sign.
 
-## FINAL STEP: Mark Exercise As Complete
+
+## Final Step: Mark Exercise As Complete
 
 Please run this script:
 
