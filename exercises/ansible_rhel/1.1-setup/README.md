@@ -74,6 +74,14 @@ You might have guessed by now this lab is pretty commandline-centric…​ :-)
 
 You will soon discover that many chapters in this lab guide come with a "Challenge Lab" section. These labs are meant to give you a small task to solve using what you have learned so far. The solution of the task is shown underneath a warning sign.
 
+## FINAL STEP: Mark Exercise As Complete
+
+Please run this script:
+
+```bash
+$HOME/workshops/exercises/ansible_rhel/completed.sh 1.1-setup
+```
+
 ----
 
 [Click here to return to the Ansible for Red Hat Enterprise Linux Workshop](../README.md#section-1---ansible-engine-exercises)
