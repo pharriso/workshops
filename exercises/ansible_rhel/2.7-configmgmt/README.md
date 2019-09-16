@@ -54,9 +54,11 @@ Now you have to create Job Templates like you would for "normal" Jobs.
 
       - **EXTRA VARIABLES**
 
+```
          snow_user: <instructor to provide>
          snow_password: <instructor to provide> 
          snow_instance: <instructor to provide>
+```
 
   - Click **SAVE**
 
