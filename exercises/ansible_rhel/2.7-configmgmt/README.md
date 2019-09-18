@@ -4,6 +4,14 @@
 
 In this exercise we will use Ansible to check the configuration of our linux servers. If we detect any drift then we will put the device back into our desired state and log an incident in ServiceNow for further investigation.
 
+## Install Pre Requisites
+
+In order to use the ServiceNow modules, we need to do a one time install of the dependencies, on the ansible control [Tower] node. Login to your control node and type:
+
+```bash
+sudo pip install pysnow
+```
+
 ## Set up Projects
 
 First you have to set up the Git repo as Projects like you normally would. You have done this before, try to do this on your own. Detailed instructions can be found below.
