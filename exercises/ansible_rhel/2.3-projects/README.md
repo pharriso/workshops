@@ -139,7 +139,7 @@ After the Job has finished go to the main **Jobs** view: All jobs are listed her
 
 Time for a little challenge:
 
-  - Use an ad hoc command on both hosts to make sure Apache has been installed and is running.
+  - Use an ad hoc command on the hosts to make sure Apache has been installed and is running.
 
 You have already been through all the steps needed, so try this for yourself.
 
@@ -153,7 +153,7 @@ You have already been through all the steps needed, so try this for yourself.
 
 - Go to **Inventories** → **Workshop Inventory**
 
-- In the **HOSTS** view select both hosts and click **RUN COMMANDS**
+- In the **HOSTS** view select the hosts and click **RUN COMMANDS**
 
 - **MODULE:** command
 
