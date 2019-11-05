@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 #
-# update InfluxDB with progress
+# update InfluxDB - student progress checker
 #
 
 if [ -z $1 ]
