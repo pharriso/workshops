@@ -4,7 +4,7 @@ There may be scenarios where you want to perform error handling if there are pro
 
 ## Step 1: Let's add a block
 
-Blocks allow us to logically group our tasks. We will also use blocks to perform error handling later in this exercise. Let's update our `apache-simple` role.
+Blocks allow us to logically group our tasks. We will also use blocks to perform error handling later in this exercise. Let's update our `apache_vhost` role.
 
 ```bash
 cd ~/ansible-files/
