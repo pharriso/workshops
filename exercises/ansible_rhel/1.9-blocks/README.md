@@ -102,7 +102,7 @@ Our playbook has failed now. We tried to smoke test our website on port 8080 but
 
 ## Step 3: rescue to the rescue
 
-Let's update our `roles/apache-simple/tasks/main.yml` file and add a rescue section at the end. The rescue section of the block will run if any errors are encountered. Here we are going to copy our original httpd.conf file back in place if we encounter any errors, force any handlers to run and then smoke test our website again.
+Let's update our `roles/apache-vhost/tasks/main.yml` file and add a rescue section at the end. The rescue section of the block will run if any errors are encountered. Here we are going to copy our original httpd.conf file back in place if we encounter any errors, force any handlers to run and then smoke test our website again.
 
 <!-- {% raw %} -->
 ```yaml
