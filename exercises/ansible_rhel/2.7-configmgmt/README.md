@@ -20,7 +20,7 @@ First you have to set up the Git repo as Projects like you normally would. You h
 
   - It should be named **linux config mgmt**
 
-  - The URL to access the repo is **https://github.com/pharriso/ansible_workshop**
+  - The URL to access the repo is **https://github.com/pharriso/uk_ansible_workshop_playbooks**
 
 > **Warning**
 > 
@@ -34,7 +34,7 @@ First you have to set up the Git repo as Projects like you normally would. You h
   
     - **SCM TYPE:** Git
   
-    - **SCM URL:** https://github.com/pharriso/ansible_workshop.git
+    - **SCM URL:** https://github.com/pharriso/uk_ansible_workshop_playbooks.git
 
     - **SCM UPDATE OPTIONS:** Tick all three boxes.
 
