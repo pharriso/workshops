@@ -4,7 +4,7 @@ Molecule is designed to aid in the development and testing of Ansible roles. Mol
 
 Molecule uses Ansible playbooks to exercise the role and its associated tests. So we eat our own dog food :)
 
-In this exercise, we'll use molecule in association with podman, a drop-in replacement for docker, to spin up and test our role.
+In this exercise, we'll use molecule in association with podman, a drop-in rootless replacement for docker, to spin up and test our role.
 
 
 ## Section 1: Installing Components
@@ -16,7 +16,7 @@ SSH into your node
 Now we can install podman and other dependencies for molecule.
 
 ```bash
-sudo yum -y install gcc podman python3-devel
+sudo yum -y install podman
 sudo systemctl enable podman.socket && sudo systemctl start podman
 sudo systemctl status podman
 ```
@@ -29,7 +29,7 @@ We use pip inside a virtualenv to install molecule:
 sudo yum -y install gcc python3-pip python3-devel openssl-devel libselinux-python3 libffi-devel git python3-virtualenv yamllint
 virtualenv --system-site-packages ~/molecule
 . ~/molecule/bin/activate
-pip install --upgrade setuptools pip
+pip install --upgrade pip
 pip install molecule
 pip install molecule[podman]
 ```
@@ -141,28 +141,46 @@ Straight out the box, we should be able to do things:
 
 ```bash
 cd apache_install
-molecule create.  <--- FAILS - fix!
-```
-
-```bash
-molecule verify
-INFO     default scenario test matrix: verify
-INFO     Running default > verify
-INFO     Running Ansible Verifier
+molecule create
+INFO     default scenario test matrix: dependency, create, prepare
+INFO     Running default > dependency
+WARNING  Skipping, missing the requirements file.
+WARNING  Skipping, missing the requirements file.
+INFO     Running default > create
 INFO     Sanity checks: 'podman'
 
-PLAY [Verify] ***********************************************************************************************************************
+PLAY [Create] ***********************************************************************************************************************
 
-TASK [Example assertion] ************************************************************************************************************
-ok: [instance] => {
-    "changed": false,
-    "msg": "All assertions passed"
-}
+TASK [Log into a container registry] ************************************************************************************************
+skipping: [localhost] => (item={'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True})
+
+TASK [Check presence of custom Dockerfiles] *****************************************************************************************
+ok: [localhost] => (item={'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True})
+
+TASK [Create Dockerfiles from image names] ******************************************************************************************
+skipping: [localhost] => (item={'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True})
+
+TASK [Discover local Podman images] *************************************************************************************************
+ok: [localhost] => (item={'changed': False, 'skipped': True, 'skip_reason': 'Conditional result was False', 'item': {'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True}, 'ansible_loop_var': 'item', 'i': 0, 'ansible_index_var': 'i'})
+
+TASK [Build an Ansible compatible image] ********************************************************************************************
+skipping: [localhost] => (item={'changed': False, 'skipped': True, 'skip_reason': 'Conditional result was False', 'item': {'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True}, 'ansible_loop_var': 'item', 'i': 0, 'ansible_index_var': 'i'})
+
+TASK [Determine the CMD directives] *************************************************************************************************
+ok: [localhost] => (item={'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True})
+
+TASK [Create molecule instance(s)] **************************************************************************************************
+changed: [localhost] => (item={'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True})
+
+TASK [Wait for instance(s) creation to complete] ************************************************************************************
+FAILED - RETRYING: Wait for instance(s) creation to complete (300 retries left).
+changed: [localhost] => (item={'started': 1, 'finished': 0, 'ansible_job_id': '298323079824.101297', 'results_file': '/home/student2/.ansible_async/298323079824.101297', 'changed': True, 'failed': False, 'item': {'image': 'docker.io/pycontribs/centos:8', 'name': 'instance', 'pre_build_image': True}, 'ansible_loop_var': 'item'})
 
 PLAY RECAP **************************************************************************************************************************
-instance                   : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+localhost                  : ok=5    changed=2    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
 
-INFO     Verifier completed successfully.
+INFO     Running default > prepare
+WARNING  Skipping, prepare playbook not configured.
 ```
 
 Hopefully that works, so you now have a test framework to work with.
