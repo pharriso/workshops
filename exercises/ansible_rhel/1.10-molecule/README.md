@@ -4,7 +4,7 @@ Molecule is designed to aid in the development and testing of Ansible roles. Mol
 
 Molecule uses Ansible playbooks to exercise the role and its associated tests. So we eat our own dog food :)
 
-In this exercise, we'll use molecule in association with docker to spin up and test our role.
+In this exercise, we'll use molecule in association with podman, a drop-in replacement for docker, to spin up and test our role.
 
 
 ## Section 1: Installing Components
@@ -13,24 +13,25 @@ SSH into your node
 
 ### Step 1 - Docker
 
-We need to install and run the docker service. This will fire up our containers for testing images/roles. The docker package is in the extras repo so let's ensure that is enabled.
+#We need to install and run the docker service. This will fire up our containers for testing images/roles. The docker package is in the extras repo so let's ensure #that is enabled.
+#
+#```bash
+#sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
+#```
+#To run docker commands as a non-priviledged user we need to create a docker group and add our user to it. Replace x with your student id.
+#
+#```bash
+#sudo groupadd docker
+#sudo usermod -a -G docker studentx
+#newgrp docker
+#```
+
+Now we can install podman and other dependencies for molecule.
 
 ```bash
-sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
-```
-To run docker commands as a non-priviledged user we need to create a docker group and add our user to it. Replace x with your student id.
-
-```bash
-sudo groupadd docker
-sudo usermod -a -G docker studentx
-newgrp docker
-```
-Now we can install docker and other dependencies for molecule.
-
-```bash
-sudo yum -y install gcc docker python-devel
-sudo systemctl enable docker && sudo systemctl start docker
-sudo systemctl status docker
+sudo yum -y install gcc podman python3-devel
+sudo systemctl enable podman.socket && sudo systemctl start podman
+sudo systemctl status podman
 ```
 
 ### Step 2 - Molecule
@@ -38,12 +39,12 @@ sudo systemctl status docker
 We use pip inside a virtualenv to install molecule:
 
 ```bash
-sudo yum -y install gcc python-pip python-devel openssl-devel libselinux-python libffi-devel git python-virtualenv yamllint
+sudo yum -y install gcc python3-pip python3-devel openssl-devel libselinux-python3 libffi-devel git python3-virtualenv yamllint
 virtualenv --system-site-packages ~/molecule
 . ~/molecule/bin/activate
 pip install --upgrade setuptools pip
-pip install --force molecule
-pip install molecule[docker]
+pip install molecule
+pip install molecule[podman]
 ```
 
 ```bash
@@ -91,7 +92,10 @@ Commands:
   verify       Run automated tests against instances.
   
 $ molecule --version
-molecule, version 2.22
+molecule 3.2.2 using python 3.6
+    ansible:2.9.16
+    delegated:3.2.2 from molecule
+    podman:0.3.0 from molecule_podman
 ```
 
 ## Section 2: Creating a New Role Framework
@@ -101,10 +105,13 @@ We'll use a simple apache role to test molecule.
 ### Step 1 - Initalise New Role
 
 ```bash
+mkdir -p ~/ansible-files/roles
 cd ~/ansible-files/roles
-molecule init role --role-name apache_install --driver-name docker
---> Initializing new role apache_install...
-Initialized role in /home/student1/ansible-files/roles/apache_install successfully.
+molecule init role apache_install --driver-name podman
+INFO     Initializing new role apache_install...
+Using /home/student1/.ansible.cfg as config file
+- Role apache_install was created successfully
+INFO     Initialized role in /home/student1/ansible-files/roles/apache_install successfully.
 ```
 
 Let's have a look at what was created:
