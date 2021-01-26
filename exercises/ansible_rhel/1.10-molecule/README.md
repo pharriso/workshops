@@ -11,20 +11,7 @@ In this exercise, we'll use molecule in association with podman, a drop-in repla
 
 SSH into your node
 
-### Step 1 - Docker
-
-#We need to install and run the docker service. This will fire up our containers for testing images/roles. The docker package is in the extras repo so let's ensure #that is enabled.
-#
-#```bash
-#sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
-#```
-#To run docker commands as a non-priviledged user we need to create a docker group and add our user to it. Replace x with your student id.
-#
-#```bash
-#sudo groupadd docker
-#sudo usermod -a -G docker studentx
-#newgrp docker
-#```
+### Step 1 - Podman
 
 Now we can install podman and other dependencies for molecule.
 
@@ -119,47 +106,32 @@ Let's have a look at what was created:
 ```bash
 $ tree
 .
-└── apache_install                            <--- role name as supplied
-    ├── defaults                              <--- default values to variables for the role
+└── apache_install
+    ├── defaults
     │   └── main.yml
-    ├── handlers                              <--- specific handlers to notify based on actions
+    ├── files
+    ├── handlers
     │   └── main.yml
-    ├── meta                                  <---  info for the role if you are uploading this to Ansible-Galaxy
+    ├── meta
     │   └── main.yml
-    ├── molecule                              <--- molecule specific information 
+    ├── molecule
     │   └── default
-    │       ├── Dockerfile.j2
-    │       ├── INSTALL.rst
+    │       ├── converge.yml
     │       ├── molecule.yml
-    │       ├── playbook.yml
-    │       └── tests
-    │           ├── test_default.py
-    │           └── test_default.pyc
-    ├── README.md                             <--- information about the role
-    ├── tasks                                 <--- tasks for the role
+    │       └── verify.yml
+    ├── README.md
+    ├── tasks
     │   └── main.yml
-    └── vars                                  <--- other variables for the role
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
         └── main.yml
 ```
 
-This command uses ansible-galaxy behind the scenes to generate a new Ansible role. It then injects a molecule directory in the role, and sets it up to run builds and test runs in a docker environment.
+This command uses ansible-galaxy behind the scenes to generate a new Ansible role. It then injects a molecule directory in the role, and sets it up to run builds and test runs in a containerised environment.
 
-The molecule/default directory is probably the most interesting:
-
-#### Dockerfile.j2: 
-This is the Dockerfile used to build the Docker container used as a test environment for your role. It can be changed and customised. The key is this makes sure important dependencies like Python, sudo, and Bash are available inside the build/test environment.
-
-#### INSTALL.rst: 
-Contains instructions for installing required dependencies for running molecule tests.
-
-#### molecule.yml: 
-Tells molecule everything it needs to know about your testing: what OS to use, how to lint your role, how to test your role, etc. 
-
-#### playbook.yml:
-This is the playbook Molecule uses to test your role. For simpler roles, you can usually leave it as-is (it will just run your role and nothing else). But for more complex roles, you might need to do some additional setup, or run other roles prior to running your role.
-
-#### tests/:
-This directory contains a basic Testinfra test, which you can expand on if you want to run additional verification of your build environment state after Ansible's done its thing.
 
 ## Section 3: Testing
 
@@ -169,8 +141,28 @@ Straight out the box, we should be able to do things:
 
 ```bash
 cd apache_install
-molecule create (check out 'docker images' and 'docker ps' output)
+molecule create.  <--- FAILS - fix!
+```
+
+```bash
 molecule verify
+INFO     default scenario test matrix: verify
+INFO     Running default > verify
+INFO     Running Ansible Verifier
+INFO     Sanity checks: 'podman'
+
+PLAY [Verify] ***********************************************************************************************************************
+
+TASK [Example assertion] ************************************************************************************************************
+ok: [instance] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+PLAY RECAP **************************************************************************************************************************
+instance                   : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+INFO     Verifier completed successfully.
 ```
 
 Hopefully that works, so you now have a test framework to work with.
