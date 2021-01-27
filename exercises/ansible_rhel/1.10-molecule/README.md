@@ -6,6 +6,9 @@ Molecule uses Ansible playbooks to exercise the role and its associated tests. S
 
 In this exercise, we'll use molecule in association with podman, a drop-in rootless replacement for docker, to spin up and test our role.
 
+Note: molecule is an upstream open source project, very liable to change.
+(This exercise was last tested against - Red Hat Enterprise Linux release 8.3 (Ootpa) - on 27 January 2021)
+
 
 ## Section 1: Installing Components
 
