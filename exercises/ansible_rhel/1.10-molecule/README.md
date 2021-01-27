@@ -18,7 +18,20 @@ Now we can install podman and other dependencies for molecule.
 ```bash
 sudo yum -y install podman
 sudo systemctl enable podman.socket && sudo systemctl start podman
+```
+
+Podman should be running (loaded, active and running):
+```bash
 sudo systemctl status podman
+● podman.service - Podman API Service
+   Loaded: loaded (/usr/lib/systemd/system/podman.service; static; vendor preset: disabled)
+   Active: active (running) since Wed 2021-01-27 12:15:17 UTC; 1s ago
+     Docs: man:podman-system-service(1)
+ Main PID: 167860 (podman)
+    Tasks: 8 (limit: 23573)
+   Memory: 31.8M
+   CGroup: /system.slice/podman.service
+           └─167860 /usr/bin/podman system service
 ```
 
 ### Step 2 - Molecule
@@ -30,8 +43,7 @@ sudo yum -y install gcc python3-pip python3-devel openssl-devel libselinux-pytho
 virtualenv --system-site-packages ~/molecule
 . ~/molecule/bin/activate
 pip install --upgrade pip
-pip install molecule
-pip install molecule[podman]
+pip install molecule molecule[podman] molecule[lint] 
 ```
 
 ```bash
