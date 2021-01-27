@@ -201,6 +201,49 @@ WARNING  Skipping, prepare playbook not configured.
 
 Hopefully that works, so you now have a test framework to work with.
 
+So what did this do and why is it useful?
+
+The 'create' directive effectively spins up some infra we can use to test our role without doing such else.
+
+If we take a look at:
+
+```bash
+cat molecule/default/molecule.yml
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+platforms:
+  - name: instance
+    image: docker.io/pycontribs/centos:8
+    pre_build_image: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
+```
+
+This helps us to see what's being used. 
+
+The default in the path referes to a 'scenario', and there is always default out-the-box. There is no need to change that for our basic testing example.
+
+We can see that molecule is going to use the podman driver and for a target platform spin up a container instance using a centos8 image.
+
+We can see this in action, using:
+
+```bash
+podman images
+REPOSITORY                   TAG     IMAGE ID      CREATED        SIZE
+docker.io/pycontribs/centos  8       0e8bfa1c168c  10 months ago  752 MB
+
+podman ps
+CONTAINER ID  IMAGE                          COMMAND               CREATED         STATUS             PORTS   NAMES
+f07640ca9996  docker.io/pycontribs/centos:8  bash -c while tru...  14 minutes ago  Up 14 minutes ago          instance
+```
+
+So we have a local centos container image and it's running from the 'molecule create'
+
 ### Step 2 - Further Testing
 
 A typical dev cycle is : write some plays/roles -> molecule converge -> rinse and repeat...
